@@ -1,5 +1,4 @@
 package ru.vsu.amm.java;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,16 +43,9 @@ public class Calculate {
             Arrays.asList("(", ")")
     );
 
-    /**
-     * ”бирает лишние пробелы
-     * @param expression - выражение
-     */
-    private static String formatExpression(String expression) {
-        return expression.replaceAll(" ", "");
-    }
 
     /**
-     * ”бирает лишние пробелы
+     * Character.toString() Ч возвращает строковый объект (String) и представл€ет указанное char-значение как одну символьную строку
      * @param c - аргумент
      */
     private static String getStringSymbol(char c) {
@@ -81,7 +73,7 @@ public class Calculate {
      */
     public static double calculateExpression(String expr) throws Exception {
 
-        ArrayList<String> expression = toStringArray("(" + formatExpression(expr) + ")");
+        ArrayList<String> expression = toStringArray("(" + expr + ")");
 
         // стек дл€ операндов (чисел)
         Stack<Double> operands = new Stack<>();
@@ -100,38 +92,45 @@ public class Calculate {
         do {
             token = expression.get(pos);
 
-            // дл€ чтени€ чисел, состо€щих из более одной цифры
-            if (prevToken.equals("(") && token.equals("-")) {
+            // унарный минус и плюс
+            if ((prevToken.equals("(") && token.equals("-")) || (prevToken.equals("(") && token.equals("+"))) {
                 operands.push(0.0);
             }
+            //contains - метод, позвол€ющий проверить, содержит ли string другую подстроку или нет
             if (digits.contains(token)) {
                 number += token;
             }
             else if (simpleFunctions.contains(token) || brackets.contains(token)) {
                 if (!number.equals("")) {
+                    // Double.parseDouble метод, возвращающий новое значение double,
+                    // инициализированное значением, представленным указанной строкой
                     operands.push(Double.parseDouble(number));
                     number = "";
                 }
 
                 if (token.equals(")")) {
+                    // peek() находит значение пол€ дл€ строки
                     while (functions.size() > 0 && !functions.peek().equals("("))
+                    //  pop() удал€ет последний элемент из массива и возвращает его значение
                         popFunction(operands, functions);
                     functions.pop();
                 }
                 else {
                     while (canPop(token, functions))
                         popFunction(operands, functions);
+                    // элемент помещаетс€ в начало стека
                     functions.push(token);
                 }
             }
             else {
                 function += token;
                 if (Functions.contains(function)) {
-                    int functionBracketStart = pos + 1;
-                    int functionBracketEnd = 0;
+                    int functionBracketStart = pos + 1;//начало функциональной скобки
+                    int functionBracketEnd = 0;//конец функциональной скобки
                     int bracketsSum = 1;
 
                     for (int i = functionBracketStart + 1; i < expression.size(); i++) {
+                        //представл€ющий сравнение равенства
                         if (expression.get(i).equals("(")) bracketsSum++;
                         if (expression.get(i).equals(")")) bracketsSum--;
                         if (bracketsSum == 0) {
@@ -140,7 +139,7 @@ public class Calculate {
                             break;
                         }
                     }
-
+                    //substring() возвращает подстроку строки между двум€ индексами или от одного индекса и до конца строки
                     String functionParameter = expr.substring(functionBracketStart, functionBracketEnd-1);
 
                     if (function.equals("sqrt")) {
@@ -229,7 +228,7 @@ public class Calculate {
             case "-":
                 return 2;
             default:
-                throw new Exception();
+                throw new Exception("¬ведЄн неверный знак" + op);
         }
     }
 }
