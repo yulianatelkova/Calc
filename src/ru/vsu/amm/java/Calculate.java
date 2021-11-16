@@ -13,33 +13,31 @@ import java.lang.Exception;
  */
 public class Calculate {
 
-    private Calculate() {}
-
     /**
      * Список допустимых чисел
      */
-    private static List<String> digits = new ArrayList<String>(
+    private static List<String> digits = new ArrayList<>(
             Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".")
     );
 
     /**
      * Список операций
      */
-    private static List<String> simpleFunctions = new ArrayList<String>(
+    private static List<String> simpleFunctions = new ArrayList<>(
             Arrays.asList("^", "/", "*", "+", "-")
     );
 
     /**
      * Список функций
      */
-    private static List<String> Functions = new ArrayList<String>(
+    private static List<String> Functions = new ArrayList<>(
             Arrays.asList("sqrt", "sin", "cos")
     );
 
     /**
      * Список скобок
      */
-    private static List<String> brackets = new ArrayList<String>(
+    private static List<String> brackets = new ArrayList<>(
             Arrays.asList("(", ")")
     );
 
@@ -68,10 +66,9 @@ public class Calculate {
     /**
      * Основная функция, которая вычисляет значение выражения
      * @param expr - выражение
-     * @throws Exception Ошибка ввода выражения
      * @return operands.pop()
      */
-    public static double calculateExpression(String expr) throws Exception {
+    public static double calculateExpression(String expr) {
 
         ArrayList<String> expression = toStringArray("(" + expr + ")");
 
@@ -146,7 +143,7 @@ public class Calculate {
                         if (Integer.parseInt (functionParameter) >= 0) {
                             double res = Math.sqrt(calculateExpression( functionParameter ));
                         operands.add(res);}
-                        else throw new Exception();
+                        else throw new ArithmeticException();
                     }
 
                     if (function.equals("sin")) {
@@ -158,14 +155,14 @@ public class Calculate {
                         double res = Math.cos(calculateExpression( functionParameter ));
                         operands.add(res);
                     }
-                } else if (!Character.isLetter(token.charAt(0))) throw new Exception();
+                } else if (!Character.isLetter(token.charAt(0))) throw new ArithmeticException();
             }
             pos++;
             prevToken = token;
         }
         while (token != null && pos + 1 <= expression.size());
         if (operands.size() > 1 || functions.size() > 0)
-            throw new Exception();
+            throw new ArithmeticException();
         return operands.pop();
     }
 
@@ -175,7 +172,7 @@ public class Calculate {
      * @param operands - операнды
      * @param functions - выражение
      */
-    private static void popFunction(Stack<Double> operands, Stack<String> functions) throws Exception{
+    private static void popFunction(Stack<Double> operands, Stack<String> functions) {
         double b = operands.pop();
         double a = operands.pop();
         switch (functions.pop()) {
@@ -192,7 +189,7 @@ public class Calculate {
                 if (b!=0){
                 operands.push(a / b);
                 break;}
-                else throw new Exception();
+                else throw new ArithmeticException();
             case "^":
                 operands.push(Math.pow(a, b));
         }
@@ -202,9 +199,8 @@ public class Calculate {
      * Расставляем приоритет операции
      * @param op1 - операции
      * @param functions - функции
-     * @throws Exception Недопустимая операция
      */
-    private static boolean canPop(String op1, Stack<String> functions) throws Exception {
+    private static boolean canPop(String op1, Stack<String> functions) {
         if (functions.size() == 0)
             return false;
         int p1 = getPriotity(op1);
@@ -215,24 +211,14 @@ public class Calculate {
     /**
      * Получаем приоритет операции
      * @param op - операции
-     * @throws Exception Недопустимая операция
      */
-    private static int getPriotity(String op) throws Exception {
-        switch (op) {
-            case "(":
-                return -1;
-            case "^":
-                return 0;
-            case "*":
-                return 1;
-            case "/":
-                return 1;
-            case "+":
-                return 2;
-            case "-":
-                return 2;
-            default:
-                throw new Exception();
-        }
+    private static int getPriotity(String op) {
+        return switch (op) {
+            case "(" -> -1;
+            case "^" -> 0;
+            case "*", "/" -> 1;
+            case "+", "-" -> 2;
+            default -> throw new ArithmeticException();
+        };
     }
 }

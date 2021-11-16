@@ -1,8 +1,9 @@
 package ru.vsu.amm.java;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * @author  Telkova Yuliana
+ * @author Telkova Yuliana
  */
 public class Main {
     /**
@@ -10,35 +11,24 @@ public class Main {
      * @param args - аргументы
      * @throws Exception Ошибка ввода выражения
      */
-    public static void main(String[] args) throws Exception {
-
-        int command = 99;
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        System.out.println();
+        System.out.println("Если захотите выйти, нажмите 'e'\n");
+        var expression = "";
         do{
-            Scanner in = new Scanner(System.in);
-            System.out.println( "1. Нажмите '1' и введите математическое выражение\n" +
-                    "2. Нажмите '2' для выхода\n");
-            try{
-                command = in.nextInt();}
-            catch (Exception e){
-                System.out.println("Ошибка ввода в меню");
-                continue;
+            try
+            {
+                Scanner inn = new Scanner(System.in);
+                expression = inn.nextLine();
+                if (!expression.equals("e")){
+                System.out.println(Calculate.calculateExpression(expression));}
             }
-            switch (command) {
-                case 1:
-                    try
-                    {
-                        Scanner inn = new Scanner(System.in);
-                        String expression = inn.nextLine();
-                        System.out.println();
-                        System.out.println(Calculate.calculateExpression(expression));
-                    }
-                    catch (Exception expected)
-                    {
-                        System.out.println("Ошибка выражения");
-                    }
-                    break;
-                default: if (command != 2) System.out.println("Ошибка ввода меню");
+            catch (Exception expected)
+            {
+                    System.out.println("Ошибка выражения");
             }
-        } while (command != 2);
-}
+            System.out.println();
+        } while (!Objects.equals(expression, "e"));
+    }
 }
