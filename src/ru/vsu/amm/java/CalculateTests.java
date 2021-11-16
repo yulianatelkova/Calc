@@ -7,31 +7,49 @@ import org.junit.Test;
  */
 public class CalculateTests {
 
+    /**
+     * тест суммы
+     */
     @Test
     public void testSummation() {
         assertEquals(Calculate.calculateExpression("2+2"), 4);
     }
 
+    /**
+     * тест разности
+     */
     @Test
     public void testSubtraction() {
         assertEquals(Calculate.calculateExpression("2-2"), 0);
     }
 
+    /**
+     * тест умножения
+     */
     @Test
     public void testMultiplication() {
         assertEquals(Calculate.calculateExpression("2*2"), 4);
     }
 
+    /**
+     * тест деления
+     */
     @Test
     public void testDivision() {
        assertEquals(Calculate.calculateExpression("2/2"), 1);
     }
 
+    /**
+     * тест возведения в степень
+     */
     @Test
     public void testExponentiation() {
         assertEquals(Calculate.calculateExpression("2^2"), 4);
     }
 
+    /**
+     * тест математических функций
+     */
     @Test
     public void testFunction() {
         assertEquals(Calculate.calculateExpression("sqrt(4)"), 2);
@@ -39,6 +57,9 @@ public class CalculateTests {
         assertEquals(Calculate.calculateExpression("cos(0)"), 1);
     }
 
+    /**
+     * тест скобок
+     */
     @Test
     public void testBracket() {
         try {
@@ -46,6 +67,9 @@ public class CalculateTests {
         } catch (ArithmeticException expected) {}
     }
 
+    /**
+     * тест посторонних знаков
+     */
     @Test
     public void testSign() {
         try {
@@ -53,6 +77,9 @@ public class CalculateTests {
         } catch (ArithmeticException expected) {}
     }
 
+    /**
+     * тест деления на ноль
+     */
     @Test
     public void testNull() {
         try {

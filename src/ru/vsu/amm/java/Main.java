@@ -9,7 +9,6 @@ public class Main {
     /**
      * функция main
      * @param args - аргументы
-     * @throws Exception Ошибка ввода выражения
      */
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
