@@ -12,12 +12,17 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
 
-        int command = 1;
+        int command = 99;
         do{
             Scanner in = new Scanner(System.in);
             System.out.println( "1. Нажмите '1' и введите математическое выражение\n" +
                     "2. Нажмите '2' для выхода\n");
-            command = in.nextInt();
+            try{
+                command = in.nextInt();}
+            catch (Exception e){
+                System.out.println("Ошибка ввода в меню");
+                continue;
+            }
             switch (command) {
                 case 1:
                     try

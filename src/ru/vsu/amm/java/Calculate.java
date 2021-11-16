@@ -143,8 +143,10 @@ public class Calculate {
                     String functionParameter = expr.substring(functionBracketStart, functionBracketEnd-1);
 
                     if (function.equals("sqrt")) {
-                        double res = Math.sqrt(calculateExpression( functionParameter ));
-                        operands.add(res);
+                        if (Integer.parseInt (functionParameter) >= 0) {
+                            double res = Math.sqrt(calculateExpression( functionParameter ));
+                        operands.add(res);}
+                        else throw new Exception();
                     }
 
                     if (function.equals("sin")) {
@@ -156,7 +158,7 @@ public class Calculate {
                         double res = Math.cos(calculateExpression( functionParameter ));
                         operands.add(res);
                     }
-                }
+                } else if (!Character.isLetter(token.charAt(0))) throw new Exception();
             }
             pos++;
             prevToken = token;
@@ -173,7 +175,7 @@ public class Calculate {
      * @param operands - операнды
      * @param functions - выражение
      */
-    private static void popFunction(Stack<Double> operands, Stack<String> functions) {
+    private static void popFunction(Stack<Double> operands, Stack<String> functions) throws Exception{
         double b = operands.pop();
         double a = operands.pop();
         switch (functions.pop()) {
@@ -187,8 +189,10 @@ public class Calculate {
                 operands.push(a * b);
                 break;
             case "/" :
+                if (b!=0){
                 operands.push(a / b);
-                break;
+                break;}
+                else throw new Exception();
             case "^":
                 operands.push(Math.pow(a, b));
         }
@@ -228,7 +232,7 @@ public class Calculate {
             case "-":
                 return 2;
             default:
-                throw new Exception("¬ведЄн неверный знак" + op);
+                throw new Exception();
         }
     }
 }
